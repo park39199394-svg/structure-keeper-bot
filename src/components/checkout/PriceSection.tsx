@@ -45,9 +45,9 @@ const PriceSection = () => {
             <Mail className="mb-0.5 h-3 w-3 shrink-0 text-destructive-foreground/85" />
           </div>
 
-          <div className="flex items-center justify-end gap-1 self-center pt-0.5">
+          <div className="flex items-center justify-end gap-1 self-center">
             <Zap className="h-3 w-3 fill-current text-destructive-foreground" />
-            <span className="whitespace-nowrap text-[10px] font-bold leading-none text-destructive-foreground">
+            <span className="whitespace-nowrap text-[10px] font-bold italic leading-none text-destructive-foreground">
               Oferta Relâmpago
             </span>
           </div>
@@ -58,15 +58,15 @@ const PriceSection = () => {
 
           <div className="flex items-center justify-end gap-1">
             <span className="text-[9px] leading-none text-destructive-foreground/85">Termina em</span>
-            <span className="rounded bg-foreground/30 px-1.5 py-[3px] text-[11px] font-bold leading-none text-warning">
+            <span className="rounded bg-foreground/30 px-1.5 py-[3px] text-[11px] font-bold leading-none text-destructive-foreground">
               {pad(timeLeft.hours)}
             </span>
             <span className="text-[10px] font-bold leading-none text-destructive-foreground">:</span>
-            <span className="rounded bg-foreground/30 px-1.5 py-[3px] text-[11px] font-bold leading-none text-warning">
+            <span className="rounded bg-foreground/30 px-1.5 py-[3px] text-[11px] font-bold leading-none text-destructive-foreground">
               {pad(timeLeft.minutes)}
             </span>
             <span className="text-[10px] font-bold leading-none text-destructive-foreground">:</span>
-            <span className="rounded bg-foreground/30 px-1.5 py-[3px] text-[11px] font-bold leading-none text-warning">
+            <span className="rounded bg-foreground/30 px-1.5 py-[3px] text-[11px] font-bold leading-none text-destructive-foreground">
               {pad(timeLeft.seconds)}
             </span>
           </div>
