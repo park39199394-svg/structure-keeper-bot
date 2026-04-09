@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { X, Minus, Plus, Check } from "lucide-react";
+import lavaPreta from "@/assets/lava-preta.jpg";
+import lavaBranca from "@/assets/lava-branca.jpg";
 import produtoYpe from "@/assets/produto-ype.jpg";
 import produtoFinishSecante from "@/assets/produto-finish-secante.jpg";
 import produtoFinishAdvanced from "@/assets/produto-finish-advanced.jpg";
