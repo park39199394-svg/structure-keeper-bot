@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Minus, Plus, Check } from "lucide-react";
+import { X, Check } from "lucide-react";
 import lavaPreta from "@/assets/lava-preta.jpg";
 import lavaBranca from "@/assets/lava-branca.jpg";
 
@@ -15,12 +15,10 @@ const colors = [
 
 const BuyModal = ({ open, onClose }: BuyModalProps) => {
   const [selectedColor, setSelectedColor] = useState("preta");
-  const [quantity, setQuantity] = useState(1);
 
   if (!open) return null;
 
   const basePrice = 128.99;
-  const total = basePrice * quantity;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center">
@@ -80,30 +78,6 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
               ))}
             </div>
           </div>
-
-          {/* Quantity */}
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-3">
-              Quantidade
-            </h3>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-              >
-                <Minus className="w-4 h-4" />
-              </button>
-              <span className="text-base font-semibold w-8 text-center">
-                {quantity}
-              </span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-              >
-                <Plus className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}
@@ -111,7 +85,7 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">Total</span>
             <span className="text-lg font-bold text-foreground">
-              R$ {total.toFixed(2).replace(".", ",")}
+              R$ {basePrice.toFixed(2).replace(".", ",")}
             </span>
           </div>
           <button
@@ -119,8 +93,8 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
               const params = new URLSearchParams();
               params.set("productId", selectedColor === "preta" ? "0b337f97-7034-4bc9-a578-a8eff9b30b01" : "5e65e1f4-3b39-4c80-9b0c-0ff5e766a8f1");
               params.set("color", selectedColor);
-              params.set("qty", String(quantity));
-              params.set("total", total.toFixed(2));
+              params.set("qty", "1");
+              params.set("total", basePrice.toFixed(2));
               window.open(`https://checkout-seg.lovable.app/checkout?${params.toString()}`, "_blank");
             }}
             className="w-full bg-primary text-primary-foreground py-3.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
