@@ -30,8 +30,8 @@ const PriceSection = () => {
     <div className="space-y-2.5">
       <div className="bg-destructive px-1 py-2">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 gap-y-1">
-          <div className="flex min-w-0 items-baseline gap-1.5">
-            <span className="relative top-[-1px] rounded-sm bg-sale px-1 py-0.5 text-[10px] font-bold leading-none text-sale-foreground">
+          <div className="flex min-w-0 items-center gap-1.5">
+            <span className="rounded-sm bg-sale px-1.5 py-1 text-[11px] font-bold leading-none text-sale-foreground">
               -85%
             </span>
             <span className="whitespace-nowrap text-[11px] leading-none text-destructive-foreground/90">
@@ -40,7 +40,7 @@ const PriceSection = () => {
             <span className="whitespace-nowrap text-[2rem] font-extrabold leading-none tracking-[-0.04em] text-destructive-foreground">
               128,99
             </span>
-            <Mail className="relative top-[-2px] h-3.5 w-3.5 shrink-0 text-destructive-foreground/85" />
+            <Mail className="h-3.5 w-3.5 shrink-0 text-destructive-foreground/85" />
           </div>
 
           <div className="flex items-center justify-end gap-1 self-center">
