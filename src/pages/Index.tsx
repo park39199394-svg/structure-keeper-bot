@@ -20,7 +20,6 @@ const Index = () => {
     <div className="max-w-lg mx-auto bg-background min-h-screen pb-20">
       <ImageCarousel />
       <div className="space-y-4 py-2">
-        <FlashOffer />
         <PriceSection />
         <ProductTitle />
         <ShippingInfo />
