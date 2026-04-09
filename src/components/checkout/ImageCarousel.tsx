@@ -1,7 +1,11 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import lavaPreta from "@/assets/lava-preta.jpg";
+import lavaBranca from "@/assets/lava-branca.jpg";
 
 const images = [
+  lavaPreta,
+  lavaBranca,
   "https://checkout-seg.lovable.app/assets/lava-1-Bnl1P3dA.jpg",
   "https://checkout-seg.lovable.app/assets/lava-2-DyCu3Qjh.jpg",
   "https://checkout-seg.lovable.app/assets/lava-3-aFKTaNXD.jpg",
