@@ -2,7 +2,7 @@ const PriceSection = () => {
   return (
     <div className="px-4 space-y-2">
       <div className="flex items-baseline gap-2 flex-wrap">
-        <span className="text-2xl font-extrabold text-foreground">R$ 97,99</span>
+        <span className="text-2xl font-extrabold text-foreground">R$ 128,99</span>
         <span className="text-sm text-muted-foreground line-through">R$ 649,90</span>
         <span className="bg-sale text-sale-foreground text-xs font-bold px-1.5 py-0.5 rounded">-85%</span>
       </div>
