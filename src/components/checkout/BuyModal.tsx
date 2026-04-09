@@ -139,54 +139,6 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
             </div>
           </div>
 
-          {/* Extra Products */}
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-1">
-              Aproveite e leve também
-            </h3>
-            <p className="text-xs text-muted-foreground mb-3">
-              Produtos essenciais para sua lava louças
-            </p>
-            <div className="space-y-2.5">
-              {extras.map((extra) => {
-                const selected = selectedExtras.includes(extra.id);
-                return (
-                  <button
-                    key={extra.id}
-                    onClick={() => toggleExtra(extra.id)}
-                    className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${
-                      selected
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-muted-foreground"
-                    }`}
-                  >
-                    <img
-                      src={extra.image}
-                      alt={extra.name}
-                      className="w-14 h-14 object-contain rounded-lg bg-white shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground leading-tight">
-                        {extra.name}
-                      </p>
-                      <p className="text-sm font-bold text-primary mt-0.5">
-                        + R$ {extra.price.toFixed(2).replace(".", ",")}
-                      </p>
-                    </div>
-                    <div
-                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                        selected
-                          ? "bg-primary border-primary"
-                          : "border-border"
-                      }`}
-                    >
-                      {selected && <Check className="w-3.5 h-3.5 text-primary-foreground" />}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
         </div>
 
         {/* Footer */}
