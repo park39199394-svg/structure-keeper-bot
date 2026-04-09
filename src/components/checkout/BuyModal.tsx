@@ -77,6 +77,15 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
         </div>
 
         <div className="p-4 space-y-6">
+          {/* Product Image */}
+          <div className="flex justify-center">
+            <img
+              src={selectedColor === "preta" ? lavaPreta : lavaBranca}
+              alt={`Lava Louça ${selectedColor === "preta" ? "Preta" : "Branca"}`}
+              className="w-48 h-48 object-contain rounded-xl"
+            />
+          </div>
+
           {/* Color Selection */}
           <div>
             <h3 className="text-sm font-semibold text-foreground mb-3">
