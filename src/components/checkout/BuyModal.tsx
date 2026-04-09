@@ -2,9 +2,6 @@ import { useState } from "react";
 import { X, Minus, Plus, Check } from "lucide-react";
 import lavaPreta from "@/assets/lava-preta.jpg";
 import lavaBranca from "@/assets/lava-branca.jpg";
-import produtoYpe from "@/assets/produto-ype.jpg";
-import produtoFinishSecante from "@/assets/produto-finish-secante.jpg";
-import produtoFinishAdvanced from "@/assets/produto-finish-advanced.jpg";
 
 interface BuyModalProps {
   open: boolean;
@@ -16,45 +13,14 @@ const colors = [
   { id: "branca", label: "Branca", hex: "#f5f5f5" },
 ];
 
-const extras = [
-  {
-    id: "ype",
-    name: "Detergente Ypê 3 em 1 - 1kg",
-    price: 29.9,
-    image: produtoYpe,
-  },
-  {
-    id: "finish-secante",
-    name: "Finish Secante - 250ml",
-    price: 34.9,
-    image: produtoFinishSecante,
-  },
-  {
-    id: "finish-advanced",
-    name: "Finish Advanced Refil - 700g",
-    price: 39.9,
-    image: produtoFinishAdvanced,
-  },
-];
-
 const BuyModal = ({ open, onClose }: BuyModalProps) => {
   const [selectedColor, setSelectedColor] = useState("preta");
   const [quantity, setQuantity] = useState(1);
-  const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
   if (!open) return null;
 
-  const toggleExtra = (id: string) => {
-    setSelectedExtras((prev) =>
-      prev.includes(id) ? prev.filter((e) => e !== id) : [...prev, id]
-    );
-  };
-
   const basePrice = 128.99;
-  const extrasTotal = extras
-    .filter((e) => selectedExtras.includes(e.id))
-    .reduce((sum, e) => sum + e.price, 0);
-  const total = basePrice * quantity + extrasTotal;
+  const total = basePrice * quantity;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center">
@@ -138,55 +104,6 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
               </button>
             </div>
           </div>
-
-          {/* Extra Products */}
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-1">
-              Aproveite e leve também
-            </h3>
-            <p className="text-xs text-muted-foreground mb-3">
-              Produtos essenciais para sua lava louças
-            </p>
-            <div className="space-y-2.5">
-              {extras.map((extra) => {
-                const selected = selectedExtras.includes(extra.id);
-                return (
-                  <button
-                    key={extra.id}
-                    onClick={() => toggleExtra(extra.id)}
-                    className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${
-                      selected
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-muted-foreground"
-                    }`}
-                  >
-                    <img
-                      src={extra.image}
-                      alt={extra.name}
-                      className="w-14 h-14 object-contain rounded-lg bg-white shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground leading-tight">
-                        {extra.name}
-                      </p>
-                      <p className="text-sm font-bold text-primary mt-0.5">
-                        + R$ {extra.price.toFixed(2).replace(".", ",")}
-                      </p>
-                    </div>
-                    <div
-                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                        selected
-                          ? "bg-primary border-primary"
-                          : "border-border"
-                      }`}
-                    >
-                      {selected && <Check className="w-3.5 h-3.5 text-primary-foreground" />}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
         </div>
 
         {/* Footer */}
@@ -203,15 +120,6 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
               params.set("productId", selectedColor === "preta" ? "0b337f97-7034-4bc9-a578-a8eff9b30b01" : "5e65e1f4-3b39-4c80-9b0c-0ff5e766a8f1");
               params.set("color", selectedColor);
               params.set("qty", String(quantity));
-              if (selectedExtras.length > 0) {
-                params.set("extras", selectedExtras.join(","));
-              }
-              const extrasData = extras
-                .filter((e) => selectedExtras.includes(e.id))
-                .map((e) => ({ id: e.id, name: e.name, price: e.price }));
-              if (extrasData.length > 0) {
-                params.set("extrasData", JSON.stringify(extrasData));
-              }
               params.set("total", total.toFixed(2));
               window.open(`https://checkout-seg.lovable.app/checkout?${params.toString()}`, "_blank");
             }}
