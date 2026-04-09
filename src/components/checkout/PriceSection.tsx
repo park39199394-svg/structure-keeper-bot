@@ -35,7 +35,7 @@ const PriceSection = () => {
               -85%
             </span>
             <span className="whitespace-nowrap text-[11px] leading-none text-destructive-foreground/90">
-              A partir de R$
+              R$
             </span>
             <span className="whitespace-nowrap text-[2rem] font-extrabold leading-none tracking-[-0.04em] text-destructive-foreground">
               128,99
