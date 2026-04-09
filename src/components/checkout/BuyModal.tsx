@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { X, Minus, Plus, Check } from "lucide-react";
+import lavaPreta from "@/assets/lava-preta.jpg";
+import lavaBranca from "@/assets/lava-branca.jpg";
 import produtoYpe from "@/assets/produto-ype.jpg";
 import produtoFinishSecante from "@/assets/produto-finish-secante.jpg";
 import produtoFinishAdvanced from "@/assets/produto-finish-advanced.jpg";
@@ -75,6 +77,15 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
         </div>
 
         <div className="p-4 space-y-6">
+          {/* Product Image */}
+          <div className="flex justify-center">
+            <img
+              src={selectedColor === "preta" ? lavaPreta : lavaBranca}
+              alt={`Lava Louça ${selectedColor === "preta" ? "Preta" : "Branca"}`}
+              className="w-48 h-48 object-contain rounded-xl"
+            />
+          </div>
+
           {/* Color Selection */}
           <div>
             <h3 className="text-sm font-semibold text-foreground mb-3">
