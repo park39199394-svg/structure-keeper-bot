@@ -1,16 +1,40 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import ImageCarousel from "@/components/checkout/ImageCarousel";
+import FlashOffer from "@/components/checkout/FlashOffer";
+import PriceSection from "@/components/checkout/PriceSection";
+import ProductTitle from "@/components/checkout/ProductTitle";
+import ShippingInfo from "@/components/checkout/ShippingInfo";
+import CustomerProtection from "@/components/checkout/CustomerProtection";
+import CustomerReviews from "@/components/checkout/CustomerReviews";
+import StoreInfo from "@/components/checkout/StoreInfo";
+import ProductDescription from "@/components/checkout/ProductDescription";
+import ShippingDetails from "@/components/checkout/ShippingDetails";
+import FAQ from "@/components/checkout/FAQ";
+import StickyBottomBar from "@/components/checkout/StickyBottomBar";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="max-w-lg mx-auto bg-background min-h-screen pb-20">
+      <ImageCarousel />
+      <div className="space-y-4 py-2">
+        <FlashOffer />
+        <PriceSection />
+        <ProductTitle />
+        <ShippingInfo />
+        <CustomerProtection />
+        <div className="border-t border-border my-2" />
+        <CustomerReviews />
+        <div className="border-t border-border my-2" />
+        <StoreInfo />
+        <div className="border-t border-border my-2" />
+        <ProductDescription />
+        <div className="border-t border-border my-2" />
+        <ShippingDetails />
+        <div className="border-t border-border my-2" />
+        <FAQ />
+      </div>
+      <StickyBottomBar />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
