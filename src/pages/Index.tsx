@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ImageCarousel from "@/components/checkout/ImageCarousel";
-import FlashOffer from "@/components/checkout/FlashOffer";
+
 import PriceSection from "@/components/checkout/PriceSection";
 import ProductTitle from "@/components/checkout/ProductTitle";
 import ShippingInfo from "@/components/checkout/ShippingInfo";
