@@ -2,9 +2,6 @@ import { useState } from "react";
 import { X, Minus, Plus, Check } from "lucide-react";
 import lavaPreta from "@/assets/lava-preta.jpg";
 import lavaBranca from "@/assets/lava-branca.jpg";
-import produtoYpe from "@/assets/produto-ype.jpg";
-import produtoFinishSecante from "@/assets/produto-finish-secante.jpg";
-import produtoFinishAdvanced from "@/assets/produto-finish-advanced.jpg";
 
 interface BuyModalProps {
   open: boolean;
@@ -16,45 +13,14 @@ const colors = [
   { id: "branca", label: "Branca", hex: "#f5f5f5" },
 ];
 
-const extras = [
-  {
-    id: "ype",
-    name: "Detergente Ypê 3 em 1 - 1kg",
-    price: 29.9,
-    image: produtoYpe,
-  },
-  {
-    id: "finish-secante",
-    name: "Finish Secante - 250ml",
-    price: 34.9,
-    image: produtoFinishSecante,
-  },
-  {
-    id: "finish-advanced",
-    name: "Finish Advanced Refil - 700g",
-    price: 39.9,
-    image: produtoFinishAdvanced,
-  },
-];
-
 const BuyModal = ({ open, onClose }: BuyModalProps) => {
   const [selectedColor, setSelectedColor] = useState("preta");
   const [quantity, setQuantity] = useState(1);
-  const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
   if (!open) return null;
 
-  const toggleExtra = (id: string) => {
-    setSelectedExtras((prev) =>
-      prev.includes(id) ? prev.filter((e) => e !== id) : [...prev, id]
-    );
-  };
-
   const basePrice = 128.99;
-  const extrasTotal = extras
-    .filter((e) => selectedExtras.includes(e.id))
-    .reduce((sum, e) => sum + e.price, 0);
-  const total = basePrice * quantity + extrasTotal;
+  const total = basePrice * quantity;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center">
@@ -138,7 +104,6 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
               </button>
             </div>
           </div>
-
         </div>
 
         {/* Footer */}
@@ -155,15 +120,6 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
               params.set("productId", selectedColor === "preta" ? "0b337f97-7034-4bc9-a578-a8eff9b30b01" : "5e65e1f4-3b39-4c80-9b0c-0ff5e766a8f1");
               params.set("color", selectedColor);
               params.set("qty", String(quantity));
-              if (selectedExtras.length > 0) {
-                params.set("extras", selectedExtras.join(","));
-              }
-              const extrasData = extras
-                .filter((e) => selectedExtras.includes(e.id))
-                .map((e) => ({ id: e.id, name: e.name, price: e.price }));
-              if (extrasData.length > 0) {
-                params.set("extrasData", JSON.stringify(extrasData));
-              }
               params.set("total", total.toFixed(2));
               window.open(`https://checkout-seg.lovable.app/checkout?${params.toString()}`, "_blank");
             }}
