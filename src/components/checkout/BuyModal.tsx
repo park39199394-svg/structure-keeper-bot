@@ -199,8 +199,11 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
           </div>
           <button
             onClick={() => {
+              const productId = selectedColor === "preta"
+                ? "0b337f97-7034-4bc9-a578-a8eff9b30b01"
+                : "5e65e1f4-3b39-4c80-9b0c-0ff5e766a8f1";
               const params = new URLSearchParams();
-              params.set("productId", "0b337f97-7034-4bc9-a578-a8eff9b30b01");
+              params.set("productId", productId);
               params.set("color", selectedColor);
               params.set("qty", String(quantity));
               if (selectedExtras.length > 0) {
