@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ImageCarousel from "@/components/checkout/ImageCarousel";
 import FlashOffer from "@/components/checkout/FlashOffer";
 import PriceSection from "@/components/checkout/PriceSection";
@@ -10,8 +11,11 @@ import ProductDescription from "@/components/checkout/ProductDescription";
 import ShippingDetails from "@/components/checkout/ShippingDetails";
 import FAQ from "@/components/checkout/FAQ";
 import StickyBottomBar from "@/components/checkout/StickyBottomBar";
+import BuyModal from "@/components/checkout/BuyModal";
 
 const Index = () => {
+  const [buyModalOpen, setBuyModalOpen] = useState(false);
+
   return (
     <div className="max-w-lg mx-auto bg-background min-h-screen pb-20">
       <ImageCarousel />
@@ -32,7 +36,8 @@ const Index = () => {
         <div className="border-t border-border my-2" />
         <FAQ />
       </div>
-      <StickyBottomBar />
+      <StickyBottomBar onBuyClick={() => setBuyModalOpen(true)} />
+      <BuyModal open={buyModalOpen} onClose={() => setBuyModalOpen(false)} />
     </div>
   );
 };
