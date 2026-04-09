@@ -50,7 +50,7 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
     );
   };
 
-  const basePrice = 284.05;
+  const basePrice = 128.99;
   const extrasTotal = extras
     .filter((e) => selectedExtras.includes(e.id))
     .reduce((sum, e) => sum + e.price, 0);
