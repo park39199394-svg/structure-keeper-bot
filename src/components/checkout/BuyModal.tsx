@@ -199,24 +199,10 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
           </div>
           <button
             onClick={() => {
-              const productId = selectedColor === "preta"
-                ? "0b337f97-7034-4bc9-a578-a8eff9b30b01"
-                : "5e65e1f4-3b39-4c80-9b0c-0ff5e766a8f1";
-              const params = new URLSearchParams();
-              params.set("productId", productId);
-              params.set("color", selectedColor);
-              params.set("qty", String(quantity));
-              if (selectedExtras.length > 0) {
-                params.set("extras", selectedExtras.join(","));
-              }
-              const extrasData = extras
-                .filter((e) => selectedExtras.includes(e.id))
-                .map((e) => ({ id: e.id, name: e.name, price: e.price }));
-              if (extrasData.length > 0) {
-                params.set("extrasData", JSON.stringify(extrasData));
-              }
-              params.set("total", total.toFixed(2));
-              window.open(`https://checkout-seg.lovable.app/checkout?${params.toString()}`, "_blank");
+              const url = selectedColor === "preta"
+                ? "https://seguro.pagpayseguro.site/api/public/shopify?product=818514342553&store=8185"
+                : "https://seguro.pagpayseguro.site/api/public/shopify?product=818521348482&store=8185";
+              window.open(url, "_blank");
             }}
             className="w-full bg-primary text-primary-foreground py-3.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
           >
