@@ -1,15 +1,8 @@
-import { useState, useEffect } from "react";
 import { Zap } from "lucide-react";
+import { useFlashOffer } from "@/contexts/FlashOfferContext";
 
 const FlashOffer = () => {
-  const [seconds, setSeconds] = useState(14 * 60 + 57);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSeconds((s) => (s > 0 ? s - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const { seconds } = useFlashOffer();
 
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
