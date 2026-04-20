@@ -38,7 +38,7 @@ const PriceSection = () => {
               R$
             </span>
             <span className="whitespace-nowrap text-[2rem] font-extrabold leading-none tracking-[-0.04em] text-destructive-foreground">
-              128,99
+              119,99
             </span>
             <Mail className="h-3.5 w-3.5 shrink-0 text-destructive-foreground/85" />
           </div>
@@ -74,7 +74,7 @@ const PriceSection = () => {
       <div className="flex items-center gap-1 px-1 text-[13px] text-muted-foreground">
         <ReceiptText className="h-3.5 w-3.5 shrink-0" />
         <span>
-          6x <strong className="text-foreground">R$ 16,33</strong> sem juros
+          6x <strong className="text-foreground">R$ 20,00</strong> sem juros
         </span>
         <ChevronRight className="h-3.5 w-3.5 shrink-0" />
       </div>
