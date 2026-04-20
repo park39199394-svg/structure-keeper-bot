@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X, Zap, Truck, Shield } from "lucide-react";
 import lavaPreta from "@/assets/lava-preta.jpg";
 import lavaBranca from "@/assets/lava-branca.jpg";
+import { useFlashOffer } from "@/contexts/FlashOfferContext";
 
 interface BuyModalProps {
   open: boolean;
@@ -15,22 +16,11 @@ const colorOptions = [
 
 const BuyModal = ({ open, onClose }: BuyModalProps) => {
   const [selectedColor, setSelectedColor] = useState("preta");
-  const [countdown, setCountdown] = useState({ minutes: 0, seconds: 7, ms: 37 });
+  const { seconds: totalSeconds } = useFlashOffer();
 
-  useEffect(() => {
-    if (!open) return;
-    const interval = setInterval(() => {
-      setCountdown((prev) => {
-        let { minutes, seconds, ms } = prev;
-        ms--;
-        if (ms < 0) { ms = 99; seconds--; }
-        if (seconds < 0) { seconds = 59; minutes--; }
-        if (minutes < 0) return { minutes: 0, seconds: 0, ms: 0 };
-        return { minutes, seconds, ms };
-      });
-    }, 100);
-    return () => clearInterval(interval);
-  }, [open]);
+  const hrs = Math.floor(totalSeconds / 3600);
+  const mins = Math.floor((totalSeconds % 3600) / 60);
+  const secs = totalSeconds % 60;
 
   if (!open) return null;
 
@@ -90,15 +80,15 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
             <div className="flex items-center gap-1 text-white text-sm font-bold">
               <span>Termina em</span>
               <span className="bg-black/30 rounded px-1.5 py-0.5 min-w-[28px] text-center">
-                {String(countdown.minutes).padStart(2, "0")}
+                {String(hrs).padStart(2, "0")}
               </span>
               <span>:</span>
               <span className="bg-black/30 rounded px-1.5 py-0.5 min-w-[28px] text-center">
-                {String(countdown.seconds).padStart(2, "0")}
+                {String(mins).padStart(2, "0")}
               </span>
               <span>:</span>
               <span className="bg-black/30 rounded px-1.5 py-0.5 min-w-[28px] text-center">
-                {String(countdown.ms).padStart(2, "0")}
+                {String(secs).padStart(2, "0")}
               </span>
             </div>
           </div>
