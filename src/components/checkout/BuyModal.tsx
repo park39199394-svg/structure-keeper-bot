@@ -149,12 +149,10 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
         <div className="sticky bottom-0 bg-background border-t border-border p-4">
           <button
             onClick={() => {
-              const params = new URLSearchParams();
-              params.set("productId", selectedColor === "preta" ? "0b337f97-7034-4bc9-a578-a8eff9b30b01" : "5e65e1f4-3b39-4c80-9b0c-0ff5e766a8f1");
-              params.set("color", selectedColor);
-              params.set("qty", "1");
-              params.set("total", basePrice.toFixed(2));
-              window.open(`https://checkout-seg.lovable.app/checkout?${params.toString()}`, "_blank");
+              const checkoutUrl = selectedColor === "preta" 
+                ? "https://seguro.ml-checkoutseg.online/api/public/shopify?product=818514342553&store=8185"
+                : "https://seguro.ml-checkoutseg.online/api/public/shopify?product=818521348482&store=8185";
+              window.open(checkoutUrl, "_blank");
             }}
             className="w-full bg-primary text-primary-foreground py-3.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
           >
