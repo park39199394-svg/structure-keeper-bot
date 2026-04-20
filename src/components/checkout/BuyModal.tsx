@@ -25,7 +25,7 @@ const BuyModal = ({ open, onClose }: BuyModalProps) => {
   if (!open) return null;
 
   const originalPrice = 479.99;
-  const basePrice = 128.99;
+  const basePrice = 119.99;
   const discount = Math.round(((originalPrice - basePrice) / originalPrice) * 100);
 
   return (
