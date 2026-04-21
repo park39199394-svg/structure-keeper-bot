@@ -4,37 +4,47 @@ import review2 from "@/assets/review-2.jpg";
 import review3 from "@/assets/review-3.jpg";
 import review4 from "@/assets/review-4.jpg";
 import review5 from "@/assets/review-5.jpg";
+import review6 from "@/assets/review-6.jpg";
+import review7 from "@/assets/review-7.jpg";
+import review8 from "@/assets/review-8.jpg";
+import review9 from "@/assets/review-9.jpg";
+import review10 from "@/assets/review-10.jpg";
+import review11 from "@/assets/review-11.jpg";
+import review12 from "@/assets/review-12.jpg";
+import review13 from "@/assets/review-13.jpg";
+import review14 from "@/assets/review-14.jpg";
+import review15 from "@/assets/review-15.jpg";
 
 const reviews = [
   {
     initials: "LM",
     name: "Luh M.",
     text: "Eu adorei, é maravilhosa, funciona muito bem e lava as louças perfeitamente. Chegou certinha e bem antes do prazo!",
-    images: [review1, review2],
+    images: [review1, review2, review6],
   },
   {
     initials: "BP",
     name: "Bela P.",
     text: "Perfeito, a lava louças cumpre o que promete. Me surpreendi, achei que seria menor. Para uma demanda pequena de louças ela atende super bem, tem me ajudado muito no dia a dia.",
-    images: [review3],
+    images: [review3, review7, review8],
   },
   {
     initials: "EC",
     name: "Elane C.",
     text: "Amei! Vem super bem embalada. Qualidade excelente e funciona perfeitamente desde o primeiro uso.",
-    images: [review4],
+    images: [review4, review13, review9],
   },
   {
     initials: "SD",
     name: "Sofia D.",
     text: "Adorei a máquina, maior que imaginei, eficiente, fácil utilização. A entrega foi bem antes do previsto. Lavar louça na mão nunca mais!",
-    images: [review5],
+    images: [review5, review10, review14],
   },
   {
     initials: "CA",
     name: "Carlos A.",
     text: "Ela é maravilhosa, pode comprar sem medo. Limpa tudo e ainda deixa seca. Top de verdade, recomendo muito!",
-    images: [review1, review3],
+    images: [review11, review12, review15],
   },
 ];
 
