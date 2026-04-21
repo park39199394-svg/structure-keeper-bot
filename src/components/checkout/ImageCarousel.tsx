@@ -2,19 +2,22 @@ import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import lavaPreta from "@/assets/lava-preta.jpg";
 import lavaBranca from "@/assets/lava-branca.jpg";
+import carousel1 from "@/assets/carousel-1.jpg";
+import carousel2 from "@/assets/carousel-2.jpg";
+import carousel3 from "@/assets/carousel-3.jpg";
+import carousel4 from "@/assets/carousel-4.jpg";
+import carousel5 from "@/assets/carousel-5.jpg";
+import carousel6 from "@/assets/carousel-6.jpg";
 
 const images = [
   lavaPreta,
   lavaBranca,
-  "https://checkout-seg.lovable.app/assets/lava-1-Bnl1P3dA.jpg",
-  "https://checkout-seg.lovable.app/assets/lava-2-DyCu3Qjh.jpg",
-  "https://checkout-seg.lovable.app/assets/lava-3-aFKTaNXD.jpg",
-  "https://checkout-seg.lovable.app/assets/lava-4-BL8xPMC1.jpg",
-  "https://checkout-seg.lovable.app/assets/lava-5-BPvM83qz.jpg",
-  "https://checkout-seg.lovable.app/assets/lava-6-D-MOFvbg.jpg",
-  "https://checkout-seg.lovable.app/assets/lava-7-C0VBxE3R.jpg",
-  "https://checkout-seg.lovable.app/assets/lava-8-B6v7OySB.jpg",
-  "https://checkout-seg.lovable.app/assets/lava-9-BFmAOmhQ.jpg",
+  carousel1,
+  carousel2,
+  carousel3,
+  carousel4,
+  carousel5,
+  carousel6,
 ];
 
 const ImageCarousel = () => {
