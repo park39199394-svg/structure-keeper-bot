@@ -39,7 +39,7 @@ const ProductDescription = () => {
           Disponível nas cores branca e preta, com dimensões de 47,1 x 42 x 43,2 cm, ela cabe em qualquer cozinha sem ocupar muito espaço. Ideal para apartamentos, kitinets e cozinhas compactas.
         </p>
         <img
-          src="https://checkout-seg.lovable.app/assets/lava-5-BPvM83qz.jpg"
+          src={lavaDetalhes}
           alt="Detalhes da lava louças"
           className="w-full rounded-lg"
         />
