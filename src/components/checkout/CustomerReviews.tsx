@@ -1,47 +1,40 @@
 import { Star } from "lucide-react";
+import review1 from "@/assets/review-1.jpg";
+import review2 from "@/assets/review-2.jpg";
+import review3 from "@/assets/review-3.jpg";
+import review4 from "@/assets/review-4.jpg";
+import review5 from "@/assets/review-5.jpg";
 
 const reviews = [
   {
     initials: "LM",
     name: "Luh M.",
     text: "Eu adorei, é maravilhosa, funciona muito bem e lava as louças perfeitamente. Chegou certinha e bem antes do prazo!",
-    images: [
-      "https://checkout-seg.lovable.app/assets/lava-review-1-GWt1no3_.jpg",
-      "https://checkout-seg.lovable.app/assets/lava-review-2-C3jy2Cyc.jpg",
-      "https://checkout-seg.lovable.app/assets/lava-review-3-K-W7DZee.jpg",
-    ],
+    images: [review1, review2],
   },
   {
     initials: "BP",
     name: "Bela P.",
     text: "Perfeito, a lava louças cumpre o que promete. Me surpreendi, achei que seria menor. Para uma demanda pequena de louças ela atende super bem, tem me ajudado muito no dia a dia.",
-    images: [
-      "https://checkout-seg.lovable.app/assets/lava-review2-1-tLzYhde7.jpg",
-      "https://checkout-seg.lovable.app/assets/lava-review2-2-eA2dJJ87.jpg",
-      "https://checkout-seg.lovable.app/assets/lava-review2-3-DE_VQ94z.jpg",
-    ],
+    images: [review3],
   },
   {
     initials: "EC",
     name: "Elane C.",
     text: "Amei! Vem super bem embalada. Qualidade excelente e funciona perfeitamente desde o primeiro uso.",
-    images: ["https://checkout-seg.lovable.app/assets/lava-review3-1-BLdi1-L3.jpg"],
+    images: [review4],
   },
   {
     initials: "SD",
     name: "Sofia D.",
     text: "Adorei a máquina, maior que imaginei, eficiente, fácil utilização. A entrega foi bem antes do previsto. Lavar louça na mão nunca mais!",
-    images: ["https://checkout-seg.lovable.app/assets/lava-review4-1-BTaayEHl.jpg"],
+    images: [review5],
   },
   {
     initials: "CA",
     name: "Carlos A.",
     text: "Ela é maravilhosa, pode comprar sem medo. Limpa tudo e ainda deixa seca. Top de verdade, recomendo muito!",
-    images: [
-      "https://checkout-seg.lovable.app/assets/lava-review5-1-15b_MnMb.jpg",
-      "https://checkout-seg.lovable.app/assets/lava-review5-2-DAtQUjdr.jpg",
-      "https://checkout-seg.lovable.app/assets/lava-review5-3-R24iYFRj.jpg",
-    ],
+    images: [review1, review3],
   },
 ];
 
