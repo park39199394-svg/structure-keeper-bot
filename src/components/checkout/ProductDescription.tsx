@@ -18,11 +18,15 @@ const ProductDescription = () => {
         <p className="text-sm text-foreground leading-relaxed">
           Esqueça as complicações de instalações hidráulicas! Com reservatório de 3 litros, a lava louças portátil funciona de forma independente. Basta encher, ligar e deixar ela trabalhar por você.
         </p>
-        <img
-          src="https://checkout-seg.lovable.app/assets/lava-4-BL8xPMC1.jpg"
-          alt="Lava Louças Portátil em uso"
+        <video
+          src={lavaEmUso}
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full rounded-lg"
         />
+
 
         <h3 className="text-base font-bold text-foreground">TECNOLOGIA AVANÇADA</h3>
         <p className="text-sm text-foreground leading-relaxed">
