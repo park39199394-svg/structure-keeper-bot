@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import lavaEmUso from "@/assets/lava-em-uso.mp4";
+import lavaDetalhes from "@/assets/lava-detalhes.jpg";
 
 const ProductDescription = () => {
   const [expanded, setExpanded] = useState(false);
