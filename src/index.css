@@ -61,3 +61,21 @@
     font-family: 'Inter', sans-serif;
   }
 }
+
+.product-description h3 {
+  @apply text-base font-bold text-foreground mt-3;
+}
+.product-description p {
+  @apply text-sm text-foreground leading-relaxed;
+}
+.product-description ul {
+  @apply text-sm text-foreground space-y-1 list-disc list-inside;
+}
+.product-description img,
+.product-description video {
+  @apply w-full rounded-lg my-2;
+}
+.product-description strong {
+  @apply font-semibold;
+}
+

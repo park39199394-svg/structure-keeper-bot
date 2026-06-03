@@ -1,31 +1,17 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import lavaPreta from "@/assets/lava-preta.jpg";
-import lavaBranca from "@/assets/lava-branca.jpg";
-import carousel1 from "@/assets/carousel-1.jpg";
-import carousel2 from "@/assets/carousel-2.jpg";
-import carousel3 from "@/assets/carousel-3.jpg";
-import carousel4 from "@/assets/carousel-4.jpg";
-import carousel5 from "@/assets/carousel-5.jpg";
-import carousel6 from "@/assets/carousel-6.jpg";
-
-const images = [
-  lavaPreta,
-  lavaBranca,
-  carousel1,
-  carousel2,
-  carousel3,
-  carousel4,
-  carousel5,
-  carousel6,
-];
+import { useProduct } from "@/contexts/ProductContext";
 
 const ImageCarousel = () => {
+  const product = useProduct();
+  const images = product.images;
   const [current, setCurrent] = useState(0);
   const touchStartX = useRef(0);
 
   const prev = () => setCurrent((c) => (c === 0 ? images.length - 1 : c - 1));
   const next = () => setCurrent((c) => (c === images.length - 1 ? 0 : c + 1));
+
+  if (!images.length) return null;
 
   return (
     <div className="relative w-full bg-background">
@@ -39,7 +25,7 @@ const ImageCarousel = () => {
       >
         <img
           src={images[current]}
-          alt="Lava Louças Portátil Semi Automática"
+          alt={product.name}
           className="w-full h-full object-cover"
         />
         <button
@@ -58,7 +44,6 @@ const ImageCarousel = () => {
           {current + 1}/{images.length}
         </div>
       </div>
-      {/* Thumbnails */}
       <div className="flex gap-1.5 p-3 overflow-x-auto">
         {images.map((img, i) => (
           <button

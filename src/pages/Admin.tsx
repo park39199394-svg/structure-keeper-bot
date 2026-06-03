@@ -1,0 +1,415 @@
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, Download, Plus, Trash2, Upload, Save } from "lucide-react";
+import type { Product, ProductColor, ProductReview } from "@/data/types";
+import {
+  deleteCustomProduct,
+  getAllProducts,
+  importProductsJson,
+  saveCustomProduct,
+} from "@/lib/productStore";
+import { defaultProducts } from "@/data/defaultProducts";
+import { toast } from "@/hooks/use-toast";
+
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+const fileToDataUrl = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+const emptyProduct: Product = {
+  slug: "",
+  name: "",
+  storeName: "",
+  storeInitial: "",
+  storeBadge: "Loja Verificada",
+  rating: 4.8,
+  ratingCount: 100,
+  sold: "100 vendidos",
+  socialProof: "",
+  price: { current: 0, original: 0, installments: 6, discountLabel: "" },
+  shippingDays: "5 - 8 dias úteis",
+  images: [],
+  colors: [],
+  descriptionHtml: "",
+  reviews: [],
+  faqs: [],
+};
+
+const Admin = () => {
+  const [products, setProducts] = useState<Product[]>(() => getAllProducts());
+  const [editingSlug, setEditingSlug] = useState<string | null>(null);
+  const [form, setForm] = useState<Product>(emptyProduct);
+
+  const defaultSlugs = useMemo(() => new Set(defaultProducts.map((p) => p.slug)), []);
+
+  const refresh = () => setProducts(getAllProducts());
+
+  const startNew = () => {
+    setEditingSlug(null);
+    setForm(emptyProduct);
+  };
+
+  const editProduct = (p: Product) => {
+    setEditingSlug(p.slug);
+    setForm(JSON.parse(JSON.stringify(p)));
+  };
+
+  const handleSave = () => {
+    const slug = form.slug || slugify(form.name);
+    if (!slug || !form.name) {
+      toast({ title: "Faltam dados", description: "Nome e slug são obrigatórios", variant: "destructive" });
+      return;
+    }
+    const finalProduct = { ...form, slug };
+    saveCustomProduct(finalProduct);
+    refresh();
+    toast({ title: "Produto salvo", description: `${finalProduct.name} salvo no navegador.` });
+    setEditingSlug(slug);
+  };
+
+  const handleDelete = (slug: string) => {
+    if (!confirm("Apagar este produto cadastrado?")) return;
+    deleteCustomProduct(slug);
+    refresh();
+    if (editingSlug === slug) startNew();
+  };
+
+  const downloadJson = () => {
+    const slug = form.slug || slugify(form.name) || "produto";
+    const blob = new Blob([JSON.stringify({ ...form, slug }, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${slug}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = async (file: File) => {
+    try {
+      const text = await file.text();
+      importProductsJson(text);
+      refresh();
+      toast({ title: "Importado", description: "JSON carregado com sucesso." });
+    } catch (e) {
+      toast({ title: "Erro ao importar", description: String(e), variant: "destructive" });
+    }
+  };
+
+  const update = <K extends keyof Product>(key: K, value: Product[K]) =>
+    setForm((f) => ({ ...f, [key]: value }));
+
+  const addImages = async (files: FileList | null) => {
+    if (!files) return;
+    const urls: string[] = [];
+    for (const f of Array.from(files)) urls.push(await fileToDataUrl(f));
+    update("images", [...form.images, ...urls]);
+  };
+
+  const removeImage = (i: number) =>
+    update("images", form.images.filter((_, idx) => idx !== i));
+
+  const updateColor = (i: number, patch: Partial<ProductColor>) => {
+    const next = [...form.colors];
+    next[i] = { ...next[i], ...patch };
+    update("colors", next);
+  };
+
+  const addColor = () =>
+    update("colors", [
+      ...form.colors,
+      { id: `opt-${form.colors.length + 1}`, label: "", image: "", checkoutUrl: "" },
+    ]);
+
+  const removeColor = (i: number) =>
+    update("colors", form.colors.filter((_, idx) => idx !== i));
+
+  const updateReview = (i: number, patch: Partial<ProductReview>) => {
+    const next = [...form.reviews];
+    next[i] = { ...next[i], ...patch };
+    update("reviews", next);
+  };
+
+  const addReview = () =>
+    update("reviews", [...form.reviews, { initials: "", name: "", text: "", images: [] }]);
+
+  const removeReview = (i: number) =>
+    update("reviews", form.reviews.filter((_, idx) => idx !== i));
+
+  const addReviewImages = async (i: number, files: FileList | null) => {
+    if (!files) return;
+    const urls: string[] = [];
+    for (const f of Array.from(files)) urls.push(await fileToDataUrl(f));
+    updateReview(i, { images: [...form.reviews[i].images, ...urls] });
+  };
+
+  useEffect(() => {
+    if (!form.slug && form.name) update("slug", slugify(form.name));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.name]);
+
+  return (
+    <div className="max-w-5xl mx-auto p-4 space-y-6">
+      <header className="flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-1 text-sm text-foreground hover:underline">
+          <ArrowLeft className="w-4 h-4" />
+          Voltar para a loja
+        </Link>
+        <div className="flex gap-2">
+          <label className="flex items-center gap-1 text-xs border border-border rounded-full px-3 py-1.5 cursor-pointer hover:bg-muted">
+            <Upload className="w-3.5 h-3.5" />
+            Importar JSON
+            <input
+              type="file"
+              accept="application/json"
+              className="hidden"
+              onChange={(e) => e.target.files?.[0] && handleImport(e.target.files[0])}
+            />
+          </label>
+          <button
+            onClick={startNew}
+            className="flex items-center gap-1 text-xs bg-primary text-primary-foreground rounded-full px-3 py-1.5"
+          >
+            <Plus className="w-3.5 h-3.5" /> Novo produto
+          </button>
+        </div>
+      </header>
+
+      <div className="grid md:grid-cols-[260px_1fr] gap-6">
+        <aside className="space-y-2">
+          <h2 className="text-sm font-bold text-foreground">Produtos</h2>
+          <ul className="space-y-1">
+            {products.map((p) => (
+              <li key={p.slug} className="flex items-center gap-2">
+                <button
+                  onClick={() => editProduct(p)}
+                  className={`flex-1 text-left text-xs px-2 py-1.5 rounded border ${
+                    editingSlug === p.slug ? "border-primary bg-primary/5" : "border-border"
+                  }`}
+                >
+                  {p.name || p.slug}
+                  {defaultSlugs.has(p.slug) && (
+                    <span className="ml-1 text-[10px] text-muted-foreground">(base)</span>
+                  )}
+                </button>
+                {!defaultSlugs.has(p.slug) && (
+                  <button
+                    onClick={() => handleDelete(p.slug)}
+                    className="text-muted-foreground hover:text-destructive p-1"
+                    aria-label="Apagar"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </aside>
+
+        <section className="space-y-6">
+          <h2 className="text-lg font-bold text-foreground">
+            {editingSlug ? "Editar produto" : "Novo produto"}
+          </h2>
+
+          {/* Basic */}
+          <fieldset className="space-y-3">
+            <legend className="text-sm font-bold text-foreground">Informações</legend>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <Input label="Nome do produto" value={form.name} onChange={(v) => update("name", v)} />
+              <Input label="Slug (URL)" value={form.slug} onChange={(v) => update("slug", slugify(v))} />
+              <Input label="Nome da loja" value={form.storeName} onChange={(v) => update("storeName", v)} />
+              <Input label="Inicial da loja" value={form.storeInitial ?? ""} onChange={(v) => update("storeInitial", v)} />
+              <Input label="Selo da loja" value={form.storeBadge ?? ""} onChange={(v) => update("storeBadge", v)} />
+              <Input label="Vendidos (texto)" value={form.sold} onChange={(v) => update("sold", v)} />
+              <Input label="Avaliação (0-5)" type="number" value={String(form.rating)} onChange={(v) => update("rating", Number(v) || 0)} />
+              <Input label="Qtd avaliações" type="number" value={String(form.ratingCount)} onChange={(v) => update("ratingCount", Number(v) || 0)} />
+              <Input label="Prova social" value={form.socialProof ?? ""} onChange={(v) => update("socialProof", v)} />
+              <Input label="Prazo de entrega" value={form.shippingDays ?? ""} onChange={(v) => update("shippingDays", v)} />
+            </div>
+          </fieldset>
+
+          {/* Price */}
+          <fieldset className="space-y-3">
+            <legend className="text-sm font-bold text-foreground">Preço</legend>
+            <div className="grid sm:grid-cols-4 gap-3">
+              <Input label="Preço atual" type="number" value={String(form.price.current)} onChange={(v) => update("price", { ...form.price, current: Number(v) || 0 })} />
+              <Input label="Preço original" type="number" value={String(form.price.original)} onChange={(v) => update("price", { ...form.price, original: Number(v) || 0 })} />
+              <Input label="Parcelas" type="number" value={String(form.price.installments ?? 1)} onChange={(v) => update("price", { ...form.price, installments: Number(v) || 1 })} />
+              <Input label="Selo de desconto" value={form.price.discountLabel ?? ""} onChange={(v) => update("price", { ...form.price, discountLabel: v })} />
+            </div>
+          </fieldset>
+
+          {/* Photos */}
+          <fieldset className="space-y-3">
+            <legend className="text-sm font-bold text-foreground">Fotos do produto (carrossel)</legend>
+            <label className="inline-flex items-center gap-1 text-xs border border-border rounded-full px-3 py-1.5 cursor-pointer hover:bg-muted">
+              <Upload className="w-3.5 h-3.5" /> Adicionar fotos
+              <input type="file" multiple accept="image/*" className="hidden" onChange={(e) => addImages(e.target.files)} />
+            </label>
+            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+              {form.images.map((img, i) => (
+                <div key={i} className="relative aspect-square bg-muted rounded overflow-hidden">
+                  <img src={img} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                  <button
+                    onClick={() => removeImage(i)}
+                    className="absolute top-1 right-1 bg-background/80 rounded-full p-1"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </fieldset>
+
+          {/* Colors */}
+          <fieldset className="space-y-3">
+            <legend className="text-sm font-bold text-foreground">Variações / Cores (botão comprar)</legend>
+            <button onClick={addColor} className="inline-flex items-center gap-1 text-xs border border-border rounded-full px-3 py-1.5 hover:bg-muted">
+              <Plus className="w-3.5 h-3.5" /> Adicionar variação
+            </button>
+            <div className="space-y-3">
+              {form.colors.map((c, i) => (
+                <div key={i} className="border border-border rounded-lg p-3 space-y-2">
+                  <div className="grid sm:grid-cols-3 gap-2">
+                    <Input label="ID" value={c.id} onChange={(v) => updateColor(i, { id: v })} />
+                    <Input label="Nome (Preta, P, etc)" value={c.label} onChange={(v) => updateColor(i, { label: v })} />
+                    <Input label="URL de checkout" value={c.checkoutUrl} onChange={(v) => updateColor(i, { checkoutUrl: v })} />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {c.image && <img src={c.image} alt="" className="w-12 h-12 rounded object-cover border border-border" />}
+                    <label className="text-xs border border-border rounded-full px-3 py-1.5 cursor-pointer hover:bg-muted">
+                      Foto da variação
+                      <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        if (f) updateColor(i, { image: await fileToDataUrl(f) });
+                      }} />
+                    </label>
+                    <button onClick={() => removeColor(i)} className="ml-auto text-destructive text-xs flex items-center gap-1">
+                      <Trash2 className="w-3 h-3" /> Remover
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </fieldset>
+
+          {/* Description */}
+          <fieldset className="space-y-3">
+            <legend className="text-sm font-bold text-foreground">Descrição (HTML aceito)</legend>
+            <textarea
+              value={form.descriptionHtml}
+              onChange={(e) => update("descriptionHtml", e.target.value)}
+              rows={12}
+              className="w-full border border-border rounded-lg p-3 text-sm font-mono"
+              placeholder="<h3>Título</h3><p>Texto...</p><img src='https://...' />"
+            />
+            <p className="text-xs text-muted-foreground">
+              Pode escrever texto puro ou usar tags HTML: &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;&lt;li&gt;, &lt;img src&gt;, &lt;video src&gt;, &lt;strong&gt;.
+            </p>
+          </fieldset>
+
+          {/* Reviews */}
+          <fieldset className="space-y-3">
+            <legend className="text-sm font-bold text-foreground">Avaliações dos clientes</legend>
+            <button onClick={addReview} className="inline-flex items-center gap-1 text-xs border border-border rounded-full px-3 py-1.5 hover:bg-muted">
+              <Plus className="w-3.5 h-3.5" /> Adicionar avaliação
+            </button>
+            <div className="space-y-3">
+              {form.reviews.map((r, i) => (
+                <div key={i} className="border border-border rounded-lg p-3 space-y-2">
+                  <div className="grid sm:grid-cols-3 gap-2">
+                    <Input label="Iniciais" value={r.initials} onChange={(v) => updateReview(i, { initials: v })} />
+                    <Input label="Nome" value={r.name} onChange={(v) => updateReview(i, { name: v })} />
+                  </div>
+                  <textarea
+                    value={r.text}
+                    onChange={(e) => updateReview(i, { text: e.target.value })}
+                    rows={3}
+                    className="w-full border border-border rounded p-2 text-sm"
+                    placeholder="Texto da avaliação"
+                  />
+                  <div className="flex items-center gap-2">
+                    <label className="text-xs border border-border rounded-full px-3 py-1.5 cursor-pointer hover:bg-muted">
+                      <Upload className="w-3 h-3 inline mr-1" /> Fotos da avaliação
+                      <input type="file" multiple accept="image/*" className="hidden" onChange={(e) => addReviewImages(i, e.target.files)} />
+                    </label>
+                    <button onClick={() => removeReview(i)} className="ml-auto text-destructive text-xs flex items-center gap-1">
+                      <Trash2 className="w-3 h-3" /> Remover
+                    </button>
+                  </div>
+                  {r.images.length > 0 && (
+                    <div className="flex gap-2 flex-wrap">
+                      {r.images.map((img, j) => (
+                        <div key={j} className="relative w-16 h-16">
+                          <img src={img} alt="" className="w-full h-full object-cover rounded" />
+                          <button
+                            onClick={() => updateReview(i, { images: r.images.filter((_, k) => k !== j) })}
+                            className="absolute top-0 right-0 bg-background/80 rounded-full p-0.5"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </fieldset>
+
+          <div className="sticky bottom-0 bg-background border-t border-border py-3 flex flex-wrap gap-2">
+            <button onClick={handleSave} className="flex items-center gap-1 bg-primary text-primary-foreground rounded-full px-4 py-2 text-sm font-bold">
+              <Save className="w-4 h-4" /> Salvar no navegador
+            </button>
+            <button onClick={downloadJson} className="flex items-center gap-1 border border-border rounded-full px-4 py-2 text-sm">
+              <Download className="w-4 h-4" /> Baixar JSON
+            </button>
+            {form.slug && (
+              <Link
+                to={`/produto/${form.slug}`}
+                className="flex items-center gap-1 border border-border rounded-full px-4 py-2 text-sm"
+              >
+                Ver página
+              </Link>
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+const Input = ({
+  label,
+  value,
+  onChange,
+  type = "text",
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+}) => (
+  <label className="flex flex-col gap-1">
+    <span className="text-xs text-muted-foreground">{label}</span>
+    <input
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="border border-border rounded px-2 py-1.5 text-sm"
+    />
+  </label>
+);
+
+export default Admin;
