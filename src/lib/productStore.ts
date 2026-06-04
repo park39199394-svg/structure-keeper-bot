@@ -1,14 +1,38 @@
-import type { Product } from "@/data/types";
+import type { Product, VariationGroup, LegacyColor } from "@/data/types";
 import { defaultProducts } from "@/data/defaultProducts";
 
 const STORAGE_KEY = "lovable.products.v1";
+
+/** Migrate older saved products (with `colors`) to the new `variationGroups` shape. */
+function normalizeProduct(raw: any): Product {
+  const p = { ...raw } as Product & { colors?: LegacyColor[] };
+  if (!p.variationGroups || !Array.isArray(p.variationGroups)) {
+    const colors = (raw as any).colors as LegacyColor[] | undefined;
+    p.variationGroups = colors && colors.length
+      ? [{
+          id: "cor",
+          label: "Cor",
+          options: colors.map((c) => ({
+            id: c.id,
+            label: c.label,
+            image: c.image,
+            checkoutUrl: c.checkoutUrl,
+          })),
+        }]
+      : [];
+  }
+  if (!p.buyButtonText) p.buyButtonText = "COMPRAR AGORA — FRETE GRÁTIS";
+  delete (p as any).colors;
+  return p;
+}
 
 function readCustom(): Product[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map(normalizeProduct);
   } catch {
     return [];
   }
@@ -16,7 +40,7 @@ function readCustom(): Product[] {
 
 export function getAllProducts(): Product[] {
   const custom = readCustom();
-  const merged = [...defaultProducts];
+  const merged = [...defaultProducts.map(normalizeProduct)];
   for (const p of custom) {
     const idx = merged.findIndex((m) => m.slug === p.slug);
     if (idx >= 0) merged[idx] = p;
@@ -44,6 +68,6 @@ export function deleteCustomProduct(slug: string) {
 
 export function importProductsJson(json: string) {
   const data = JSON.parse(json);
-  const items: Product[] = Array.isArray(data) ? data : [data];
+  const items: Product[] = (Array.isArray(data) ? data : [data]).map(normalizeProduct);
   for (const item of items) saveCustomProduct(item);
 }

@@ -1,8 +1,14 @@
-export interface ProductColor {
+export interface VariationOption {
   id: string;
   label: string;
-  image: string;
+  image?: string;
   checkoutUrl: string;
+}
+
+export interface VariationGroup {
+  id: string;
+  label: string; // ex: "Cor", "Tamanho"
+  options: VariationOption[];
 }
 
 export interface ProductReview {
@@ -36,9 +42,18 @@ export interface Product {
   socialProof?: string;
   price: ProductPrice;
   shippingDays?: string;
-  images: string[]; // URLs or data URIs
-  colors: ProductColor[];
-  descriptionHtml: string; // accepts HTML (img/video tags allowed)
+  buyButtonText?: string;
+  images: string[];
+  variationGroups: VariationGroup[];
+  descriptionHtml: string;
   reviews: ProductReview[];
   faqs: ProductFaq[];
+}
+
+/** Legacy color shape kept for backward compatibility when reading old data. */
+export interface LegacyColor {
+  id: string;
+  label: string;
+  image: string;
+  checkoutUrl: string;
 }
