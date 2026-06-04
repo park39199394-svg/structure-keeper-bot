@@ -42,19 +42,26 @@ export const lavaLoucasProduct: Product = {
     discountLabel: "-85%",
   },
   shippingDays: "5 - 8 dias úteis",
+  buyButtonText: "COMPRAR AGORA — FRETE GRÁTIS",
   images: [lavaPreta, lavaBranca, carousel1, carousel2, carousel3, carousel4, carousel5, carousel6],
-  colors: [
+  variationGroups: [
     {
-      id: "preta",
-      label: "Preta",
-      image: lavaPreta,
-      checkoutUrl: "https://seguro.ml-checkoutseg.online/api/public/shopify?product=818514342553&store=8185",
-    },
-    {
-      id: "branca",
-      label: "Branca",
-      image: lavaBranca,
-      checkoutUrl: "https://seguro.ml-checkoutseg.online/api/public/shopify?product=818521348482&store=8185",
+      id: "cor",
+      label: "Cor",
+      options: [
+        {
+          id: "preta",
+          label: "Preta",
+          image: lavaPreta,
+          checkoutUrl: "https://seguro.ml-checkoutseg.online/api/public/shopify?product=818514342553&store=8185",
+        },
+        {
+          id: "branca",
+          label: "Branca",
+          image: lavaBranca,
+          checkoutUrl: "https://seguro.ml-checkoutseg.online/api/public/shopify?product=818521348482&store=8185",
+        },
+      ],
     },
   ],
   descriptionHtml: `
