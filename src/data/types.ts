@@ -16,6 +16,8 @@ export interface ProductReview {
   name: string;
   text: string;
   images: string[];
+  date?: string; // ex: "2026-08-03 14:32"
+  rating?: number; // 1-5, defaults to 5
 }
 
 export interface ProductFaq {

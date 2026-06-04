@@ -13,6 +13,7 @@ import ShippingDetails from "@/components/checkout/ShippingDetails";
 import FAQ from "@/components/checkout/FAQ";
 import StickyBottomBar from "@/components/checkout/StickyBottomBar";
 import BuyModal from "@/components/checkout/BuyModal";
+import VariationRow from "@/components/checkout/VariationRow";
 
 interface ProductLayoutProps {
   product: Product;
@@ -28,6 +29,7 @@ const ProductLayout = ({ product }: ProductLayoutProps) => {
         <div className="space-y-4 py-2">
           <PriceSection />
           <ProductTitle />
+          <VariationRow onClick={() => setBuyModalOpen(true)} />
           <ShippingInfo />
           <CustomerProtection />
           <div className="border-t border-border my-2" />
